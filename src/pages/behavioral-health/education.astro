@@ -1,0 +1,93 @@
+---
+import Base from '../../layouts/Base.astro';
+import Callout from '../../components/Callout.astro';
+import Confirm from '../../components/Confirm.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import { service } from '../../data/schema';
+import { site } from '../../data/site';
+
+const description = 'Alcohol and drug education, and anger education, in Topeka, Kansas. Call to sign up and for pricing.';
+---
+
+<Base
+  title="Alcohol & Drug Education and Anger Education in Topeka"
+  description={description}
+  breadcrumbs={[
+    { label: 'Behavioral Health Care', href: '/behavioral-health/' },
+    { label: 'Education', href: '/behavioral-health/education/' },
+  ]}
+  jsonLd={[service('Alcohol and drug education; anger education', description, '/behavioral-health/education/')]}
+>
+  <PageHeader title="Education" eyebrow="Behavioral Health Care" crumbs={[{ label: 'Behavioral Health Care', href: '/behavioral-health/' }]}>
+    <Fragment slot="lead">
+      <p>Alcohol and drug education, and anger education.</p>
+      <p class="small"><Confirm note="Who each course is for: adults, youth, or both" /></p>
+    </Fragment>
+    <Fragment slot="actions">
+      <a class="btn btn--primary" href={site.phone.href}><Icon name="Phone" size={20} /> Call to sign up</a>
+    </Fragment>
+  </PageHeader>
+
+  <section class="section" aria-labelledby="courses-title">
+    <div class="container">
+      <h2 id="courses-title" class="visually-hidden">Courses</h2>
+      <div class="grid grid--2">
+        <article class="card">
+          <span class="icon-tile"><Icon name="BookOpen" size={24} /></span>
+          <h3>Alcohol and drug education</h3>
+          <p>Education about alcohol and drug use. It may be recommended after an assessment.</p>
+          <dl class="facts">
+            <div>
+              <dt>Format and length</dt>
+              <dd><Confirm note="Alcohol and drug education format and length (the whiteboard notes 8 hours)" /></dd>
+            </div>
+          </dl>
+        </article>
+        <article class="card">
+          <span class="icon-tile"><Icon name="Flame" size={24} /></span>
+          <h3>Anger education</h3>
+          <p>Education focused on anger. It may be recommended after an assessment.</p>
+          <dl class="facts">
+            <div>
+              <dt>What it covers, format and length</dt>
+              <dd><Confirm note="Anger education topics, format, and length" /></dd>
+            </div>
+          </dl>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight" aria-label="Court paperwork">
+    <div class="container">
+      <Callout icon="FileText" tone="neutral">
+        <p><strong>Paperwork for court</strong></p>
+        <p><Confirm note="Do you provide proof of completion for court? Show this section only if you do" /></p>
+      </Callout>
+    </div>
+  </section>
+
+  <CtaBand title="Ready to sign up?">
+    <p>Call to sign up or ask about the schedule. Call for pricing.</p>
+  </CtaBand>
+</Base>
+
+<style>
+  .facts {
+    margin: auto 0 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+  }
+
+  dt {
+    font-weight: 700;
+    font-size: var(--step--1);
+    color: var(--plum-700);
+  }
+
+  dd {
+    margin: 0.2rem 0 0;
+  }
+</style>

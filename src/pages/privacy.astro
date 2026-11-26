@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import Confirm from '../components/Confirm.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { site } from '../data/site';
+---
+
+<Base title="Privacy" description="How the Assess for Success website handles the information you send through its forms." breadcrumbs={[{ label: 'Privacy', href: '/privacy/' }]}>
+  <PageHeader title="Privacy" crumbs={[]}>
+    <p slot="lead">How this website handles the information you send us.</p>
+  </PageHeader>
+
+  <section class="section">
+    <div class="container prose">
+      <p><Confirm note="Client reviews and approves this privacy wording" /></p>
+
+      <h2>Information you send us</h2>
+      <p>
+        When you fill out a form on this site, we receive what you enter, such as your name, phone number, email address, and message.
+        We use it to respond to you.
+      </p>
+      <p>
+        Forms are processed by our website host, Netlify, and delivered to our office email. Please don't send health information
+        through the website. We'll talk about your situation privately by phone or in person.
+      </p>
+
+      <h2>Cookies and tracking</h2>
+      <p>This website doesn't use advertising trackers, and it doesn't use cookies to track you.</p>
+
+      <h2>Text messages</h2>
+      <p><Confirm note="Do you text clients? If so, add your text-message consent wording here; if not, remove this section" /></p>
+
+      <h2>Health privacy</h2>
+      <p><Confirm note="If Assess for Success is a HIPAA covered entity, link its Notice of Privacy Practices here" /></p>
+
+      <h2>Questions</h2>
+      <p>
+        Call <a href={site.phone.href}>{site.phone.display}</a> or email <a href={`mailto:${site.email}`}>{site.email}</a>.
+      </p>
+    </div>
+  </section>
+</Base>

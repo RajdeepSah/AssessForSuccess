@@ -1,0 +1,237 @@
+---
+import logoReversed from '../assets/brand/logo-reversed.svg';
+import { LOGO_SIZE } from '../data/brand';
+import { site } from '../data/site';
+import Confirm from './Confirm.astro';
+import Icon from './Icon.astro';
+
+const year = new Date().getFullYear();
+
+const columns = [
+  {
+    title: 'Behavioral Health Care',
+    links: [
+      { href: '/behavioral-health/', label: 'Overview' },
+      { href: '/behavioral-health/assessments/', label: 'Assessments' },
+      { href: '/behavioral-health/treatment/', label: 'Treatment' },
+      { href: '/behavioral-health/education/', label: 'Education' },
+    ],
+  },
+  {
+    title: 'A4S Sports',
+    links: [
+      { href: '/sports/', label: 'Overview' },
+      { href: '/sports/#teams', label: 'Teams' },
+      { href: '/sports/#training', label: 'One-on-one training' },
+      { href: '/sports/#mentoring', label: 'Mentoring' },
+      { href: '/sports/register/', label: 'Register' },
+    ],
+  },
+  {
+    title: 'Assess for Success',
+    links: [
+      { href: '/', label: 'Home' },
+      { href: '/referrals/', label: 'Courts & Referrals' },
+      { href: '/about/', label: 'About' },
+      { href: '/contact/', label: 'Contact' },
+    ],
+  },
+];
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <img src={logoReversed.src} width={LOGO_SIZE.width} height={LOGO_SIZE.height} alt="Assess for Success" />
+      <p>Assessments, treatment, and education for adults and youth. Youth sports through A4S Sports.</p>
+    </div>
+
+    <div class="footer-contact">
+      <h2 class="footer-title">Contact</h2>
+      <ul role="list">
+        <li>
+          <Icon name="Phone" size={18} />
+          <a href={site.phone.href}>{site.phone.display}</a>
+        </li>
+        <li>
+          <Icon name="Printer" size={18} />
+          <span>Fax {site.fax.display}</span>
+        </li>
+        <li>
+          <Icon name="Mail" size={18} />
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+        </li>
+        <li>
+          <Icon name="MapPin" size={18} />
+          <span>
+            {site.address.street}<br />{site.address.city}, {site.address.region} {site.address.postalCode}<br />
+            <a href={site.mapsUrl} rel="noopener">Get directions</a>
+          </span>
+        </li>
+        <li>
+          <Icon name="Clock" size={18} />
+          <span>{site.hours.days}<br />{site.hours.time} ({site.hours.zone})</span>
+        </li>
+      </ul>
+    </div>
+
+    <nav class="footer-nav" id="footer-nav" aria-label="Footer">
+      {
+        columns.map((col) => (
+          <div>
+            <h2 class="footer-title">{col.title}</h2>
+            <ul role="list">
+              {col.links.map((l) => (
+                <li>
+                  <a href={l.href}>{l.label}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </nav>
+  </div>
+
+  <div class="container">
+    <p class="crisis">
+      <Icon name="LifeBuoy" size={20} />
+      <span>
+        If you or someone else is in danger, call <a href="tel:911">911</a>. For the 988 Suicide &amp; Crisis Lifeline, call or text
+        <a href="tel:988">988</a>.
+      </span>
+    </p>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container footer-bottom__inner">
+      <p>© {year} <Confirm note="Exact legal business name">Assess For Success, LLC</Confirm></p>
+      <ul role="list">
+        <li><a href="/privacy/">Privacy</a></li>
+        <li><a href="/accessibility/">Accessibility</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: 0;
+    background: var(--plum-900);
+    color: #efe6f3;
+    font-size: 1rem;
+  }
+
+  .site-footer a {
+    color: var(--white);
+    text-decoration-color: rgb(255 255 255 / 0.4);
+  }
+
+  .site-footer a:hover {
+    text-decoration-color: var(--white);
+  }
+
+  .site-footer :focus-visible {
+    outline-color: var(--gold-400);
+  }
+
+  .footer-grid {
+    display: grid;
+    gap: 2.5rem;
+    padding-block: clamp(3rem, 6vw, 4.5rem) 2rem;
+  }
+
+  .footer-brand img {
+    width: auto;
+    height: 64px;
+    margin-bottom: 1rem;
+  }
+
+  .footer-brand p {
+    max-width: 30ch;
+    color: #dccbe5;
+  }
+
+  .footer-title {
+    margin: 0 0 0.9rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold-400);
+  }
+
+  .site-footer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .footer-contact li {
+    display: flex;
+    gap: 0.65rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.5;
+  }
+
+  .footer-contact :global(.icon) {
+    margin-top: 0.2rem;
+    color: #dccbe5;
+  }
+
+  .footer-nav {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: 2rem;
+  }
+
+  .footer-nav li {
+    margin-bottom: 0.55rem;
+  }
+
+  .crisis {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    margin: 0 0 2rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid rgb(255 255 255 / 0.18);
+    border-radius: var(--radius-sm);
+    background: rgb(255 255 255 / 0.05);
+  }
+
+  .crisis :global(.icon) {
+    margin-top: 0.15rem;
+    color: var(--gold-400);
+  }
+
+  .footer-bottom {
+    border-top: 1px solid rgb(255 255 255 / 0.14);
+    background: var(--plum-950);
+  }
+
+  .footer-bottom__inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 2rem;
+    justify-content: space-between;
+    align-items: center;
+    padding-block: 1.1rem;
+    font-size: 0.9375rem;
+  }
+
+  .footer-bottom p {
+    margin: 0;
+  }
+
+  .footer-bottom ul {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 64em) {
+    .footer-grid {
+      grid-template-columns: 1.1fr 1.1fr 2fr;
+    }
+  }
+</style>

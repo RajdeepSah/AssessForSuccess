@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { site } from '../data/site';
+---
+
+<Base
+  title="Accessibility"
+  description="Assess for Success wants everyone to be able to use this website. Here's how it's built and how to tell us about a problem."
+  breadcrumbs={[{ label: 'Accessibility', href: '/accessibility/' }]}
+>
+  <PageHeader title="Accessibility" crumbs={[]}>
+    <p slot="lead">We want everyone to be able to use this website.</p>
+  </PageHeader>
+
+  <section class="section">
+    <div class="container prose">
+      <h2>How this site is built</h2>
+      <p>This website is designed to meet the Web Content Accessibility Guidelines (WCAG) 2.2 at Level AA. For example:</p>
+      <ul>
+        <li>You can use every page and form with a keyboard alone.</li>
+        <li>Text has strong color contrast, and you can zoom the page up to 400%.</li>
+        <li>Pages work with screen readers, with clear headings, labels, and image descriptions.</li>
+        <li>Animations are kept to a minimum and turn off if your device is set to reduce motion.</li>
+      </ul>
+
+      <h2>Tell us about a problem</h2>
+      <p>
+        If something on this site doesn't work for you, please let us know. Call
+        <a href={site.phone.href}>{site.phone.display}</a> or email <a href={`mailto:${site.email}`}>{site.email}</a>, and tell us
+        which page you were on and what happened.
+      </p>
+    </div>
+  </section>
+</Base>

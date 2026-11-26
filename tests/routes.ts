@@ -1,0 +1,15 @@
+export const routes = [
+  '/',
+  '/behavioral-health/',
+  '/behavioral-health/assessments/',
+  '/behavioral-health/treatment/',
+  '/behavioral-health/education/',
+  '/referrals/',
+  '/sports/',
+  '/sports/register/',
+  '/about/',
+  '/contact/',
+  '/thank-you/',
+  '/privacy/',
+  '/accessibility/',
+];

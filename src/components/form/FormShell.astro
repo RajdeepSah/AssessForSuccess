@@ -1,0 +1,53 @@
+---
+// Netlify Forms wrapper: honeypot spam protection, no CAPTCHA, success page at /thank-you/.
+// Works without JavaScript (native validation); src/scripts/forms.ts adds inline errors and a summary.
+interface Props {
+  name: string;
+  submitLabel: string;
+  id?: string;
+}
+
+const { name, submitLabel, id } = Astro.props;
+---
+
+<form
+  class="form"
+  name={name}
+  id={id}
+  method="POST"
+  action="/thank-you/"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+  data-form
+>
+  <input type="hidden" name="form-name" value={name} />
+  <p class="visually-hidden" aria-hidden="true">
+    <label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+  </p>
+
+  <div class="error-summary" data-error-summary tabindex="-1" hidden>
+    <h2>Please check the form</h2>
+    <ul></ul>
+  </div>
+
+  <p class="form-note">
+    Required fields are marked with <span class="req" aria-hidden="true">*</span><span class="visually-hidden">an asterisk</span>.
+  </p>
+
+  <slot />
+
+  <div>
+    <button class="btn btn--primary" type="submit">{submitLabel}</button>
+  </div>
+</form>
+
+<script>
+  import '../../scripts/forms.ts';
+</script>
+
+<style>
+  .req {
+    color: var(--error);
+    font-weight: 700;
+  }
+</style>

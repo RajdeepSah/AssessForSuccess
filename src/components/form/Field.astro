@@ -1,0 +1,87 @@
+---
+interface Props {
+  label: string;
+  name: string;
+  type?: 'text' | 'email' | 'tel' | 'textarea' | 'checkbox';
+  required?: boolean;
+  autocomplete?: string;
+  inputmode?: 'text' | 'numeric' | 'tel' | 'email';
+  pattern?: string;
+  hint?: string;
+  rows?: number;
+  maxlength?: number;
+  /** Message shown when a required field is left empty. */
+  error?: string;
+  /** Show only when another field has one of these values, e.g. "program=team,training". */
+  showWhen?: string;
+}
+
+const {
+  label,
+  name,
+  type = 'text',
+  required = false,
+  autocomplete,
+  inputmode,
+  pattern,
+  hint,
+  rows = 4,
+  maxlength,
+  error,
+  showWhen,
+} = Astro.props;
+
+const id = `f-${name}`;
+const describedBy = [hint ? `${id}-hint` : null, `${id}-error`].filter(Boolean).join(' ');
+const requiredMsg = error ?? (type === 'checkbox' ? `Please confirm: ${label}` : `Enter ${label.charAt(0).toLowerCase()}${label.slice(1)}`);
+---
+
+{
+  type === 'checkbox' ? (
+    <div class="field" data-field data-required-msg={requiredMsg} data-show-when={showWhen}>
+      <label class="choice" for={id}>
+        <input id={id} type="checkbox" name={name} value="yes" required={required} aria-describedby={describedBy} />
+        <span>
+          {label}
+          {required && <span class="req" aria-hidden="true"> *</span>}
+        </span>
+      </label>
+      <p class="error" id={`${id}-error`} hidden />
+    </div>
+  ) : (
+    <div class="field" data-field data-required-msg={requiredMsg} data-show-when={showWhen}>
+      <label for={id}>
+        {label}
+        {required && <span class="req" aria-hidden="true"> *</span>}
+      </label>
+      {hint && (
+        <p class="hint" id={`${id}-hint`}>
+          {hint}
+        </p>
+      )}
+      {type === 'textarea' ? (
+        <textarea id={id} name={name} rows={rows} required={required} maxlength={maxlength} aria-describedby={describedBy} />
+      ) : (
+        <input
+          id={id}
+          name={name}
+          type={type}
+          required={required}
+          autocomplete={autocomplete}
+          inputmode={inputmode}
+          pattern={pattern}
+          maxlength={maxlength}
+          aria-describedby={describedBy}
+        />
+      )}
+      <p class="error" id={`${id}-error`} hidden />
+    </div>
+  )
+}
+
+<style>
+  .req {
+    color: var(--error);
+    font-weight: 700;
+  }
+</style>

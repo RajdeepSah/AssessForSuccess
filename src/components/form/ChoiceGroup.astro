@@ -1,0 +1,55 @@
+---
+interface Option {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  legend: string;
+  name: string;
+  options: Option[];
+  type?: 'radio' | 'checkbox';
+  /** Radio groups only: one option must be chosen. */
+  required?: boolean;
+  hint?: string;
+  error?: string;
+  showWhen?: string;
+}
+
+const { legend, name, options, type = 'radio', required = false, hint, error, showWhen } = Astro.props;
+const base = `f-${name}`;
+const describedBy = [hint ? `${base}-hint` : null, `${base}-error`].filter(Boolean).join(' ');
+---
+
+<fieldset class="field" data-field data-required-msg={error ?? `Choose ${legend.charAt(0).toLowerCase()}${legend.slice(1)}`} data-show-when={showWhen}>
+  <legend>
+    {legend}
+    {required && <span class="req" aria-hidden="true"> *</span>}
+  </legend>
+  {hint && <p class="hint" id={`${base}-hint`}>{hint}</p>}
+  <div class="choices">
+    {
+      options.map((o, i) => (
+        <label class="choice" for={`${base}-${i}`}>
+          <input
+            id={`${base}-${i}`}
+            type={type}
+            name={name}
+            value={o.value}
+            required={type === 'radio' && required}
+            aria-describedby={describedBy}
+          />
+          <span>{o.label}</span>
+        </label>
+      ))
+    }
+  </div>
+  <p class="error" id={`${base}-error`} hidden></p>
+</fieldset>
+
+<style>
+  .req {
+    color: var(--error);
+    font-weight: 700;
+  }
+</style>

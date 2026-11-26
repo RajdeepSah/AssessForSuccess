@@ -1,0 +1,296 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Callout from '../../components/Callout.astro';
+import Confirm from '../../components/Confirm.astro';
+import FaqItem from '../../components/FaqItem.astro';
+import Icon from '../../components/Icon.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import heroImage from '../../assets/sports/gym-hero.jpg';
+import { ORG_ID } from '../../data/schema';
+import { site } from '../../data/site';
+import { programs, seasons, sports } from '../../data/sports';
+
+const description =
+  'A4S Sports: youth teams, one-on-one skills training, and mentoring from Assess for Success in Topeka. Sports may include flag football, basketball, volleyball, and soccer.';
+
+const sportsOrg = {
+  '@context': 'https://schema.org',
+  '@type': 'SportsOrganization',
+  name: 'A4S Sports',
+  url: `${site.url}/sports/`,
+  description: 'Youth sports, one-on-one skills training, and mentoring from Assess for Success.',
+  parentOrganization: { '@id': ORG_ID },
+  telephone: site.phone.schema,
+};
+
+const programDetails: Record<string, { label: string; note: string }> = {
+  team: { label: 'Ages and seasons', note: 'Team age groups and seasons' },
+  training: { label: 'Sports and skills', note: 'Which sports and skills one-on-one training covers, and who trains' },
+  mentoring: { label: 'What mentoring involves', note: 'What A4S mentoring involves (format, ages, how often)' },
+};
+---
+
+<Base
+  title="A4S Sports: Youth Teams, Training & Mentoring in Topeka"
+  fullTitle
+  description={description}
+  ogImage="/og/sports.png"
+  ogImageAlt="A4S Sports: teams, one-on-one training, and mentoring for youth in Topeka, Kansas"
+  breadcrumbs={[{ label: 'A4S Sports', href: '/sports/' }]}
+  jsonLd={[sportsOrg]}
+  theme="sports"
+>
+  <PageHeader title="A4S Sports" eyebrow="Youth" crumbs={[]} variant="sports">
+    <p slot="lead">Youth sports from Assess for Success: team play, one-on-one skills training, and mentoring.</p>
+    <Fragment slot="actions">
+      <a class="btn btn--gold" href="/sports/register/">Register your child <Icon name="ArrowRight" size={20} /></a>
+      <a class="btn btn--secondary" href={site.phone.href}><Icon name="Phone" size={20} /> Call {site.phone.display}</a>
+    </Fragment>
+    <Picture
+      slot="aside"
+      src={heroImage}
+      formats={['avif', 'webp']}
+      widths={[560, 840, 1200, 1600]}
+      sizes="(min-width: 75em) 540px, (min-width: 64em) 45vw, 100vw"
+      alt=""
+      loading="eager"
+      fetchpriority="high"
+      class="hero-photo"
+    />
+  </PageHeader>
+
+  <section class="section" aria-labelledby="programs-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="programs-title">Three ways to take part</h2>
+      </div>
+      <div class="grid grid--3">
+        {
+          programs.map((p) => (
+            <article class="card program" id={p.anchor}>
+              <span class="icon-tile">
+                <Icon name={p.icon} size={24} />
+              </span>
+              <h3>{p.title}</h3>
+              <p>{p.summary}</p>
+              <dl class="facts">
+                <dt>{programDetails[p.id].label}</dt>
+                <dd>
+                  <Confirm note={programDetails[p.id].note} />
+                </dd>
+              </dl>
+              <a class="btn btn--gold program-cta" href={`/sports/register/?program=${p.id}`}>
+                {p.cta}
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--white" aria-labelledby="sports-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="sports-title">Sports through the year</h2>
+        <p class="lead">Sports through the year may include flag football, basketball, volleyball, and soccer.</p>
+        <p class="small"><Confirm note="Which sports run in which seasons" /></p>
+      </div>
+      <ul class="grid grid--4 sport-tiles" role="list">
+        {
+          sports.map((s) => (
+            <li class="sport-tile">
+              <Picture src={s.image} formats={['avif', 'webp']} widths={[360, 540, 720]} sizes="(min-width: 64em) 270px, (min-width: 40em) 45vw, 100vw" alt="" />
+              <h3>{s.name}</h3>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  {
+    seasons.length > 0 && (
+      <section class="section" aria-labelledby="coming-title">
+        <div class="container">
+          <div class="section-head">
+            <h2 id="coming-title">Coming up</h2>
+          </div>
+          <ul class="grid grid--3 seasons" role="list">
+            {seasons.map((s) => (
+              <li class="card">
+                <p class="eyebrow">{s.sport}</p>
+                <h3>{s.label}</h3>
+                {s.details && <p class="muted">{s.details}</p>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section" aria-labelledby="faq-title">
+    <div class="container faq-wrap">
+      <div>
+        <h2 id="faq-title">Questions</h2>
+        <Callout icon="Info" tone="gold">
+          <p><strong>Call for pricing.</strong></p>
+          <p>Call <a href={site.phone.href}>{site.phone.display}</a> to ask about costs.</p>
+        </Callout>
+      </div>
+      <div>
+        <FaqItem q="What ages can join?">
+          <p><Confirm note="Ages for teams, training, and mentoring" /></p>
+        </FaqItem>
+        <FaqItem q="Where do teams practice and play?">
+          <p><Confirm note="Practice and game locations" /></p>
+        </FaqItem>
+        <FaqItem q="How much does it cost?">
+          <p>Call for pricing: <a href={site.phone.href}>{site.phone.display}</a>.</p>
+        </FaqItem>
+        <FaqItem q="How do I sign up?">
+          <p>Fill out the <a href="/sports/register/">registration form</a> and we'll call you to confirm details and pricing. You can also call us.</p>
+        </FaqItem>
+      </div>
+    </div>
+  </section>
+
+  <section class="register-band" aria-labelledby="register-title">
+    <div class="container register-inner">
+      <div>
+        <h2 id="register-title">Ready to sign up?</h2>
+        <p>Register online and we'll call you to confirm details and pricing.</p>
+      </div>
+      <div class="btn-row">
+        <a class="btn btn--primary" href="/sports/register/">Register your child</a>
+        <a class="btn btn--secondary" href={site.phone.href}><Icon name="Phone" size={20} /> Call {site.phone.display}</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero-photo,
+  :global(.hero-photo) {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+  }
+
+  .program {
+    border-top: 6px solid var(--gold-400);
+  }
+
+  .program h3 {
+    font-size: var(--step-2);
+  }
+
+  .facts {
+    margin: auto 0 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .facts dt {
+    font-weight: 700;
+    font-size: var(--step--1);
+    color: var(--plum-700);
+  }
+
+  .facts dd {
+    margin: 0.2rem 0 0;
+  }
+
+  .program-cta {
+    align-self: flex-start;
+  }
+
+  .sport-tiles {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .sport-tile {
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--white);
+  }
+
+  .sport-tile :global(img) {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+  }
+
+  .sport-tile h3 {
+    margin: 0;
+    padding: 0.9rem 1.1rem;
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+  }
+
+  .seasons {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .faq-wrap {
+    display: grid;
+    gap: 1.5rem 3rem;
+  }
+
+  .faq-wrap h2 {
+    margin-bottom: 1.25rem;
+  }
+
+  @media (min-width: 56em) {
+    .faq-wrap {
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    }
+  }
+
+  .register-band {
+    background: var(--gold-400);
+  }
+
+  .register-inner {
+    display: grid;
+    gap: 1.5rem;
+    align-items: center;
+    padding-block: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .register-band h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    margin-bottom: 0.2em;
+  }
+
+  .register-band p {
+    margin: 0;
+    font-size: var(--step-1);
+  }
+
+  .register-band :global(:focus-visible) {
+    outline-color: var(--ink);
+  }
+
+  @media (min-width: 56em) {
+    .register-inner {
+      grid-template-columns: 1fr auto;
+    }
+  }
+</style>

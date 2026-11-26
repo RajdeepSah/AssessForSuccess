@@ -1,0 +1,387 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Monogram from '../components/Monogram.astro';
+import Step from '../components/Step.astro';
+import Steps from '../components/Steps.astro';
+import WholePerson from '../components/WholePerson.astro';
+import { organization } from '../data/schema';
+import { site } from '../data/site';
+
+const paths = [
+  {
+    tone: 'bhc',
+    audience: 'Adults & Youth',
+    title: 'Behavioral Health Care',
+    href: '/behavioral-health/',
+    icon: 'HeartHandshake',
+    text: 'Assessments, treatment for substance use disorders, and alcohol, drug, and anger education.',
+    links: [
+      { href: '/behavioral-health/assessments/', label: 'Assessments' },
+      { href: '/behavioral-health/treatment/', label: 'Treatment' },
+      { href: '/behavioral-health/education/', label: 'Education' },
+    ],
+    cta: 'Explore Behavioral Health Care',
+  },
+  {
+    tone: 'sports',
+    audience: 'Youth',
+    title: 'A4S Sports',
+    href: '/sports/',
+    icon: 'Trophy',
+    text: 'Sign your child up for a team, register for one-on-one skills training, or learn about mentoring.',
+    links: [
+      { href: '/sports/#teams', label: 'Teams' },
+      { href: '/sports/#training', label: 'Training' },
+      { href: '/sports/#mentoring', label: 'Mentoring' },
+    ],
+    cta: 'Explore A4S Sports',
+  },
+];
+---
+
+<Base
+  title="Assess for Success: Assessments & Treatment in Topeka, KS"
+  fullTitle
+  description="Mental health and substance use assessments, treatment, and education for adults and youth in Topeka, KS, including court-ordered DUI assessments."
+  jsonLd={[organization()]}
+>
+  <section class="hero">
+    <Monogram class="hero-mark" />
+    <div class="container hero-inner">
+      <p class="eyebrow">Topeka, Kansas · Adults and youth</p>
+      <h1>Assess for Success</h1>
+      <p class="hero-lead">
+        Mental health and substance use assessments, treatment, and education, including court-ordered assessments for DUI, drug
+        possession, and criminal damage cases.
+      </p>
+
+      <div class="referral">
+        <span class="referral-icon"><Icon name="Scale" size={22} /></span>
+        <p>
+          <strong>Courts, including juvenile court, can refer young people and adults to us for an assessment.</strong>
+          <a class="link-arrow" href="/referrals/">How referrals work <Icon name="ArrowRight" size={18} /></a>
+        </p>
+      </div>
+
+      <div class="btn-row">
+        <a class="btn btn--primary" href={site.phone.href}><Icon name="Phone" size={20} /> Call {site.phone.display}</a>
+        <a class="btn btn--secondary" href="/contact/#message">Send a message</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="paths" aria-labelledby="paths-title">
+    <div class="container">
+      <h2 id="paths-title" class="visually-hidden">Choose a program</h2>
+      <div class="grid grid--2">
+        {
+          paths.map((p) => (
+            <article class:list={['card', 'card--link', 'path', `path--${p.tone}`]}>
+              <div class="path-top">
+                <span class="icon-tile">
+                  <Icon name={p.icon} size={26} />
+                </span>
+                <span class="audience">{p.audience}</span>
+              </div>
+              <h3 class="path-title">
+                <a class="stretched" href={p.href}>
+                  {p.title}
+                </a>
+              </h3>
+              <p class="path-text">{p.text}</p>
+              <ul class="path-links above" role="list">
+                {p.links.map((l) => (
+                  <li>
+                    <a href={l.href}>{l.label}</a>
+                  </li>
+                ))}
+              </ul>
+              <span class="link-arrow path-cta" aria-hidden="true">
+                {p.cta} <Icon name="ArrowRight" size={18} />
+              </span>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section how" aria-labelledby="how-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Behavioral Health Care</p>
+        <h2 id="how-title">How it works</h2>
+      </div>
+      <Steps>
+        <Step title="Call us or get referred">
+          <p>Call us, for yourself or your child, or get referred by a court.</p>
+        </Step>
+        <Step title="Complete an assessment">
+          <p>Meet with us for a mental health or substance use assessment.</p>
+        </Step>
+        <Step title="Get your recommendation">
+          <p>Depending on your assessment, we may recommend treatment, education, or both. We offer both here.</p>
+        </Step>
+      </Steps>
+    </div>
+  </section>
+
+  <section class="section section--white" aria-labelledby="whole-title">
+    <div class="container whole">
+      <WholePerson variant="compact" />
+      <div>
+        <h2 id="whole-title">We look at the whole person.</h2>
+        <p class="lead">In counseling, we consider your physical, mental, social, and spiritual well-being.</p>
+        <a class="link-arrow" href="/behavioral-health/treatment/#whole-person">How we approach treatment <Icon name="ArrowRight" size={18} /></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section visit" aria-labelledby="visit-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="visit-title">Visit or call</h2>
+        <p class="lead">
+          Call for pricing. What you pay on your own can differ from what a court pays under a contract, so we go over pricing with
+          you directly.
+        </p>
+      </div>
+      <div class="grid grid--3 visit-grid">
+        <div class="card">
+          <span class="icon-tile"><Icon name="MapPin" size={24} /></span>
+          <h3>Office</h3>
+          <p>{site.address.street}<br />{site.address.city}, {site.address.region} {site.address.postalCode}</p>
+          <a class="link-arrow" href={site.mapsUrl} rel="noopener">Get directions <Icon name="ArrowRight" size={18} /></a>
+        </div>
+        <div class="card">
+          <span class="icon-tile"><Icon name="Clock" size={24} /></span>
+          <h3>Hours</h3>
+          <p>{site.hours.days}<br />{site.hours.time}</p>
+          <p class="small muted">{site.hours.zone}</p>
+        </div>
+        <div class="card">
+          <span class="icon-tile"><Icon name="Phone" size={24} /></span>
+          <h3>Phone</h3>
+          <p><a class="phone-big" href={site.phone.href}>{site.phone.display}</a></p>
+          <p class="small muted">Fax {site.fax.display}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(3rem, 7vw, 5.5rem) clamp(2rem, 4vw, 3rem);
+  }
+
+  .hero :global(.hero-mark) {
+    position: absolute;
+    top: -14%;
+    right: max(-5rem, -7vw);
+    height: 135%;
+    width: auto;
+    color: var(--plum-700);
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    position: relative;
+  }
+
+  .hero h1 {
+    margin-bottom: 0.25em;
+    font-size: clamp(2.75rem, 1.5rem + 5.2vw, 5.25rem);
+  }
+
+  .hero-lead {
+    max-width: 38ch;
+    font-size: clamp(1.2rem, 1rem + 0.8vw, 1.55rem);
+    line-height: 1.45;
+  }
+
+  .referral {
+    display: flex;
+    gap: 0.9rem;
+    align-items: flex-start;
+    max-width: 46rem;
+    margin: 1.75rem 0 2rem;
+    padding: 1.1rem 1.35rem;
+    border: 1px solid var(--plum-200);
+    border-radius: var(--radius);
+    background: var(--white);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .referral p {
+    margin: 0;
+    padding-top: 0.2rem;
+  }
+
+  .referral strong {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 1.125rem;
+    line-height: 1.4;
+  }
+
+  .referral-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--plum-700);
+    color: var(--white);
+  }
+
+  /* ---- the two paths */
+  .paths {
+    padding-bottom: var(--section);
+  }
+
+  .path {
+    border-top: 6px solid var(--plum-700);
+    padding: clamp(1.75rem, 3.5vw, 2.5rem);
+  }
+
+  .path--sports {
+    border-top-color: var(--gold-400);
+  }
+
+  .path--sports .icon-tile {
+    background: var(--gold-100);
+    color: #8a5a00;
+  }
+
+  .path-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .path-top .icon-tile {
+    margin-bottom: 0;
+  }
+
+  .audience {
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    background: var(--plum-100);
+    color: var(--plum-900);
+    font-size: 0.875rem;
+    font-weight: 750;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .path--sports .audience {
+    background: var(--gold-100);
+    color: #6b4500;
+  }
+
+  .path-title {
+    margin: 1.25rem 0 0.5rem;
+    font-size: var(--step-3);
+  }
+
+  .path-title a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .path--sports .path-title a {
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+  }
+
+  .path-title a:focus-visible {
+    outline: none;
+  }
+
+  .path:has(.stretched:focus-visible) {
+    outline: 3px solid var(--plum-700);
+    outline-offset: 3px;
+  }
+
+  .path-text {
+    color: var(--muted);
+    font-size: 1.125rem;
+  }
+
+  .path-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0.25rem 0 1.5rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .path-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0.35rem 0.9rem;
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    color: var(--ink);
+    font-weight: 650;
+    font-size: 1rem;
+    text-decoration: none;
+  }
+
+  .path-links a:hover {
+    border-color: var(--plum-700);
+    color: var(--plum-700);
+  }
+
+  .path--sports .path-links a:hover {
+    border-color: var(--gold-500);
+    color: var(--ink);
+    background: var(--gold-100);
+  }
+
+  .path-cta {
+    margin-top: auto;
+    color: var(--plum-700);
+  }
+
+  /* ---- whole person band */
+  .whole {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  @media (min-width: 48em) {
+    .whole {
+      grid-template-columns: auto 1fr;
+      gap: clamp(2rem, 6vw, 5rem);
+    }
+  }
+
+  /* ---- visit */
+  .visit-grid h3 {
+    margin-bottom: 0.4rem;
+  }
+
+  .visit-grid p {
+    margin-bottom: 0.5rem;
+  }
+
+  .phone-big {
+    font-size: 1.375rem;
+    font-weight: 750;
+    text-decoration: none;
+  }
+</style>

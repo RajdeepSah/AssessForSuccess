@@ -1,0 +1,61 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  q: string;
+}
+const { q } = Astro.props;
+---
+
+<details class="faq-item">
+  <summary>
+    <span>{q}</span>
+    <Icon name="ChevronDown" size={20} />
+  </summary>
+  <div class="faq-a"><slot /></div>
+</details>
+
+<style>
+  .faq-item {
+    border-bottom: 1px solid var(--line);
+  }
+
+  summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.15rem 0.25rem;
+    font-weight: 700;
+    font-size: 1.125rem;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary :global(.icon) {
+    color: var(--plum-700);
+    transition: transform 0.2s var(--ease);
+  }
+
+  .faq-item[open] summary :global(.icon) {
+    transform: rotate(180deg);
+  }
+
+  summary:hover {
+    color: var(--plum-700);
+  }
+
+  .faq-a {
+    padding: 0 0.25rem 1.25rem;
+    color: var(--muted);
+    max-width: 65ch;
+  }
+
+  .faq-a :global(p:last-child) {
+    margin-bottom: 0;
+  }
+</style>

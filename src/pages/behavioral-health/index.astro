@@ -1,0 +1,89 @@
+---
+import Base from '../../layouts/Base.astro';
+import Callout from '../../components/Callout.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import ServiceCard from '../../components/ServiceCard.astro';
+import { service } from '../../data/schema';
+import { bhcServices } from '../../data/services';
+import { site } from '../../data/site';
+
+const description =
+  'Assessments, treatment for substance use disorders, and alcohol, drug, and anger education for adults and youth in Topeka, Kansas.';
+---
+
+<Base
+  title="Behavioral Health Care for Adults & Youth in Topeka"
+  description={description}
+  breadcrumbs={[{ label: 'Behavioral Health Care', href: '/behavioral-health/' }]}
+  jsonLd={[service('Behavioral health care', description, '/behavioral-health/')]}
+>
+  <PageHeader title="Behavioral Health Care" eyebrow="Adults and youth" crumbs={[]}>
+    <p slot="lead">Assessments, treatment, and education for adults and youth in Topeka.</p>
+    <Fragment slot="actions">
+      <a class="btn btn--primary" href={site.phone.href}><Icon name="Phone" size={20} /> Call {site.phone.display}</a>
+      <a class="btn btn--secondary" href="/referrals/">For courts and referral partners</a>
+    </Fragment>
+  </PageHeader>
+
+  <section class="section" aria-labelledby="services-title">
+    <div class="container">
+      <h2 id="services-title" class="visually-hidden">Our services</h2>
+      <div class="grid grid--3">
+        {
+          bhcServices.map((s) => (
+            <ServiceCard title={s.title} href={s.href} icon={s.icon} headingLevel="h3">
+              <p>{s.summary}</p>
+            </ServiceCard>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight section--white" aria-label="Who we help">
+    <div class="container grid grid--2">
+      <Callout icon="Scale">
+        <p><strong>Referred by a court?</strong></p>
+        <p>We work with courts, including juvenile court. Courts can refer adults and young people for assessments, treatment, and education.</p>
+        <p><a class="link-arrow" href="/referrals/">For courts and referral partners <Icon name="ArrowRight" size={18} /></a></p>
+      </Callout>
+      <Callout icon="HeartHandshake" tone="neutral">
+        <p><strong>Looking for help for your child?</strong></p>
+        <p>Behavioral Health Care is for adults and youth. Call us and we'll talk through the next step.</p>
+        <p><a class="link-arrow" href={site.phone.href}>Call {site.phone.display} <Icon name="ArrowRight" size={18} /></a></p>
+      </Callout>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="paying-title">
+    <div class="container paying">
+      <div>
+        <h2 id="paying-title">Paying for services</h2>
+      </div>
+      <div class="prose">
+        <p class="lead">Call for pricing.</p>
+        <p>
+          What you pay on your own can differ from what a court pays under a contract, so we go over pricing with you directly. Call
+          {' '}<a href={site.phone.href}>{site.phone.display}</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .paying {
+    display: grid;
+    gap: 1rem 3rem;
+  }
+
+  @media (min-width: 56em) {
+    .paying {
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    }
+  }
+</style>

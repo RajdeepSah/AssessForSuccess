@@ -1,0 +1,148 @@
+---
+import Base from '../../layouts/Base.astro';
+import Callout from '../../components/Callout.astro';
+import Confirm from '../../components/Confirm.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import FaqItem from '../../components/FaqItem.astro';
+import Icon from '../../components/Icon.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import Step from '../../components/Step.astro';
+import Steps from '../../components/Steps.astro';
+import { faqPage, service } from '../../data/schema';
+import { site } from '../../data/site';
+
+const description =
+  'Mental health and substance use assessments for adults and youth in Topeka, KS, including court-ordered assessments for DUI, drug possession, and criminal damage.';
+
+const pricingAnswer =
+  'Call for pricing. What you pay on your own can differ from what a court pays under a contract, so we go over pricing with you directly.';
+
+// Only confirmed answers go into structured data.
+const confirmedFaqs = [
+  {
+    q: 'Can I get a court-ordered assessment here?',
+    a: 'Yes. We provide court-ordered assessments for DUI, drug possession, and criminal damage cases.',
+  },
+  { q: 'Do you assess young people?', a: 'Yes. Our behavioral health services are for adults and youth.' },
+  { q: 'How much does an assessment cost?', a: pricingAnswer },
+];
+
+const types = [
+  { icon: 'Brain', title: 'Mental health assessment', text: 'An assessment of mental health concerns, for adults and youth.' },
+  { icon: 'ClipboardCheck', title: 'Substance use assessment', text: 'An assessment of alcohol and drug use, for adults and youth.' },
+  {
+    icon: 'Scale',
+    title: 'Court-ordered assessment',
+    text: 'For DUI, drug possession, and criminal damage cases. We provide DUI assessments for the courts.',
+  },
+];
+---
+
+<Base
+  title="DUI, Court-Ordered & Mental Health Assessments in Topeka"
+  description={description}
+  breadcrumbs={[
+    { label: 'Behavioral Health Care', href: '/behavioral-health/' },
+    { label: 'Assessments', href: '/behavioral-health/assessments/' },
+  ]}
+  jsonLd={[service('Mental health and substance use assessments', description, '/behavioral-health/assessments/'), faqPage(confirmedFaqs)]}
+>
+  <PageHeader title="Assessments" eyebrow="Behavioral Health Care" crumbs={[{ label: 'Behavioral Health Care', href: '/behavioral-health/' }]}>
+    <p slot="lead">Mental health and substance use assessments for adults and youth, including court-ordered assessments.</p>
+    <Fragment slot="actions">
+      <a class="btn btn--primary" href={site.phone.href}><Icon name="Phone" size={20} /> Call to schedule</a>
+      <a class="btn btn--secondary" href="/referrals/">For courts</a>
+    </Fragment>
+  </PageHeader>
+
+  <section class="section" aria-labelledby="types-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="types-title">Types of assessments</h2>
+      </div>
+      <div class="grid grid--3">
+        {
+          types.map((t) => (
+            <div class="card">
+              <span class="icon-tile">
+                <Icon name={t.icon} size={24} />
+              </span>
+              <h3>{t.title}</h3>
+              <p class="muted">{t.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--white" aria-labelledby="steps-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="steps-title">What happens</h2>
+      </div>
+      <Steps layout="column">
+        <Step title="Call or get referred">
+          <p>Call <a href={site.phone.href}>{site.phone.display}</a> to schedule, or your court can refer you.</p>
+        </Step>
+        <Step title="Your assessment appointment">
+          <p><Confirm note="Assessment length, format (in person or telehealth), and what it covers" /></p>
+        </Step>
+        <Step title="Your recommendation">
+          <p>Depending on the assessment, we may recommend treatment, education, or both.</p>
+        </Step>
+        <Step title="Next steps">
+          <p>You can do the recommended treatment or education here.</p>
+          <p><Confirm note="How assessment results reach the court, and which signed releases are needed" /></p>
+        </Step>
+      </Steps>
+    </div>
+  </section>
+
+  <section class="section" aria-label="Before your appointment">
+    <div class="container grid grid--2">
+      <Callout icon="FileText" tone="neutral">
+        <p><strong>What to bring</strong></p>
+        <p><Confirm note="What to bring to an assessment (for example, photo ID or court paperwork)" /></p>
+      </Callout>
+      <Callout icon="Scale">
+        <p><strong>Referring someone from a court?</strong></p>
+        <p>Courts, including juvenile court, can refer adults and young people for assessments.</p>
+        <p><a class="link-arrow" href="/referrals/">How referrals work <Icon name="ArrowRight" size={18} /></a></p>
+      </Callout>
+    </div>
+  </section>
+
+  <section class="section section--white" aria-labelledby="faq-title">
+    <div class="container faq-wrap">
+      <h2 id="faq-title">Questions</h2>
+      <div>
+        {
+          confirmedFaqs.map((f) => (
+            <FaqItem q={f.q}>
+              <p>{f.a}</p>
+            </FaqItem>
+          ))
+        }
+        <FaqItem q="How long does an assessment take?">
+          <p><Confirm note="Typical assessment length" /></p>
+        </FaqItem>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand title="Ready to schedule an assessment?" />
+</Base>
+
+<style>
+  .faq-wrap {
+    display: grid;
+    gap: 1rem 3rem;
+  }
+
+  @media (min-width: 56em) {
+    .faq-wrap {
+      grid-template-columns: minmax(0, 0.6fr) minmax(0, 1.4fr);
+    }
+  }
+</style>

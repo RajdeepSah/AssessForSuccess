@@ -1,0 +1,41 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+---
+
+<Base title="Thank you" description="Thanks for contacting Assess for Success. We received your message and will get back to you." noindex>
+  <section class="section">
+    <div class="container thanks">
+      <span class="check"><Icon name="Check" size={32} strokeWidth={2.5} /></span>
+      <h1>Thank you</h1>
+      <p class="lead">We received your message and will get back to you.</p>
+      <p>
+        If you'd like to talk sooner, call <a href={site.phone.href}>{site.phone.display}</a>, {site.hours.days},
+        {site.hours.time} ({site.hours.zone}).
+      </p>
+      <div class="btn-row">
+        <a class="btn btn--primary" href="/">Back to home</a>
+        <a class="btn btn--secondary" href={site.phone.href}><Icon name="Phone" size={20} /> Call us</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .thanks {
+    max-width: 40rem;
+    padding-block: 2rem;
+  }
+
+  .check {
+    display: inline-grid;
+    place-items: center;
+    width: 4rem;
+    height: 4rem;
+    margin-bottom: 1.5rem;
+    border-radius: 50%;
+    background: var(--plum-100);
+    color: var(--plum-700);
+  }
+</style>

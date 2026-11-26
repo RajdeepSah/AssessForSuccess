@@ -1,0 +1,36 @@
+---
+interface Props {
+  layout?: 'row' | 'column' | 'grid';
+}
+const { layout = 'row' } = Astro.props;
+---
+
+<ol class:list={['steps', `steps--${layout}`]} role="list">
+  <slot />
+</ol>
+
+<style>
+  .steps {
+    display: grid;
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+  }
+
+  @media (min-width: 48em) {
+    .steps--grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+  }
+
+  @media (min-width: 56em) {
+    .steps--row {
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(0, 1fr);
+      gap: 1.5rem;
+    }
+  }
+</style>

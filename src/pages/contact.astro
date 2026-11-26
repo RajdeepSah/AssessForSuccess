@@ -1,0 +1,109 @@
+---
+import Base from '../layouts/Base.astro';
+import Callout from '../components/Callout.astro';
+import ContactBlock from '../components/ContactBlock.astro';
+import Icon from '../components/Icon.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Field from '../components/form/Field.astro';
+import FormShell from '../components/form/FormShell.astro';
+import SelectField from '../components/form/SelectField.astro';
+import { organization } from '../data/schema';
+import { fullAddress, site } from '../data/site';
+---
+
+<Base
+  title="Contact Assess for Success in Topeka, KS"
+  description={`Call ${site.phone.display} or visit ${fullAddress}. Open ${site.hours.short}. Send a message and we'll get back to you.`}
+  breadcrumbs={[{ label: 'Contact', href: '/contact/' }]}
+  jsonLd={[organization()]}
+>
+  <PageHeader title="Contact us" crumbs={[]} current="Contact">
+    <p slot="lead">Call us during office hours, or send a message and we'll get back to you.</p>
+    <Fragment slot="actions">
+      <a class="btn btn--primary" href={site.phone.href}><Icon name="Phone" size={20} /> Call {site.phone.display}</a>
+    </Fragment>
+  </PageHeader>
+
+  <section class="section">
+    <div class="container layout">
+      <div class="info">
+        <ContactBlock />
+        <Callout icon="Info" tone="neutral" class="pricing">
+          <p><strong>Call for pricing.</strong></p>
+          <p>What you pay on your own can differ from what a court pays under a contract, so we go over pricing with you directly.</p>
+        </Callout>
+        <Callout icon="Scale">
+          <p><strong>Referring someone from a court?</strong></p>
+          <p><a class="link-arrow" href="/referrals/#referral-form">Send a referral inquiry <Icon name="ArrowRight" size={18} /></a></p>
+        </Callout>
+      </div>
+
+      <div class="card form-card" id="message">
+        <h2>Send a message</h2>
+        <FormShell name="contact" submitLabel="Send message">
+          <Field label="Your name" name="name" required autocomplete="name" error="Enter your name" />
+          <Field label="Phone" name="phone" type="tel" required autocomplete="tel" error="Enter a phone number we can reach you at" />
+          <Field label="Email" name="email" type="email" autocomplete="email" />
+          <SelectField
+            label="What can we help with?"
+            name="topic"
+            options={[
+              { value: 'Assessment', label: 'An assessment' },
+              { value: 'Treatment', label: 'Treatment' },
+              { value: 'Education', label: 'Education' },
+              { value: 'A4S Sports', label: 'A4S Sports' },
+              { value: 'Court or agency referral', label: 'A court or agency referral' },
+              { value: 'Something else', label: 'Something else' },
+            ]}
+          />
+          <SelectField
+            label="Best time to reach you"
+            name="best_time"
+            options={[
+              { value: 'Morning', label: 'Morning' },
+              { value: 'Afternoon', label: 'Afternoon' },
+              { value: 'Any time', label: 'Any time' },
+            ]}
+          />
+          <Field label="Message" name="message" type="textarea" maxlength={1500} />
+          <p class="privacy-note">
+            <Icon name="ShieldCheck" size={20} />
+            <span>Please don't include health details in this form. We'll talk privately by phone.</span>
+          </p>
+        </FormShell>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .layout {
+    display: grid;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  @media (min-width: 64em) {
+    .layout {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 4rem;
+    }
+  }
+
+  .info {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .info :global(.pricing) {
+    margin-top: 0.5rem;
+  }
+
+  .form-card {
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+  }
+
+  .form-card h2 {
+    font-size: var(--step-2);
+  }
+</style>

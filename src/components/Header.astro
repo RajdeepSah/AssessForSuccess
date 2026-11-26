@@ -1,0 +1,418 @@
+---
+import logo from '../assets/brand/logo.svg';
+import { LOGO_SIZE } from '../data/brand';
+import { mainNav } from '../data/nav';
+import { site } from '../data/site';
+import Icon from './Icon.astro';
+
+const path = Astro.url.pathname;
+const isPage = (href: string) => path === href;
+const inSection = (href: string) => href !== '/' && path.startsWith(href);
+
+const subBlurbs: Record<string, string> = {
+  '/behavioral-health/assessments/': 'Mental health, substance use, court-ordered',
+  '/behavioral-health/treatment/': 'Individual and group therapy',
+  '/behavioral-health/education/': 'Alcohol and drug, anger',
+};
+---
+
+<header class="site-header" data-header>
+  <div class="container bar">
+    <a class="brand" href="/">
+      <img src={logo.src} width={LOGO_SIZE.width} height={LOGO_SIZE.height} alt="Assess for Success, home" />
+    </a>
+
+    <nav class="nav" aria-label="Main">
+      <a class="nav-toggle" href="#footer-nav" data-nav-toggle>
+        <span class="nav-toggle__open"><Icon name="Menu" size={22} /></span>
+        <span class="nav-toggle__close"><Icon name="X" size={22} /></span>
+        <span>Menu</span>
+      </a>
+
+      <div class="nav-panel" id="nav-panel">
+        <ul class="nav-list" role="list">
+          {
+            mainNav.map((item) =>
+              item.children ? (
+                <li class="has-sub" data-sub>
+                  <div class="nav-row">
+                    <a
+                      class:list={['nav-link', { 'is-section': inSection(item.href) }]}
+                      href={item.href}
+                      aria-current={isPage(item.href) ? 'page' : undefined}
+                    >
+                      {item.label}
+                    </a>
+                    <button
+                      class="sub-toggle"
+                      type="button"
+                      aria-expanded="false"
+                      aria-controls="sub-bhc"
+                      data-sub-toggle
+                    >
+                      <span class="visually-hidden">{item.label} pages</span>
+                      <Icon name="ChevronDown" size={18} />
+                    </button>
+                  </div>
+                  <ul class="sub" id="sub-bhc" role="list">
+                    {item.children.map((child) => (
+                      <li>
+                        <a href={child.href} aria-current={isPage(child.href) ? 'page' : undefined}>
+                          <span class="sub-title">{child.label}</span>
+                          <span class="sub-blurb">{subBlurbs[child.href]}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ) : (
+                <li>
+                  <a
+                    class:list={['nav-link', { 'is-section': inSection(item.href) }]}
+                    href={item.href}
+                    aria-current={isPage(item.href) ? 'page' : undefined}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ),
+            )
+          }
+        </ul>
+
+        <div class="panel-extra">
+          <a class="btn btn--primary" href={site.phone.href}>
+            <Icon name="Phone" size={20} /> Call {site.phone.display}
+          </a>
+          <p class="small muted">{site.hours.short} · {site.hours.zone}</p>
+        </div>
+      </div>
+    </nav>
+
+    <a class="btn btn--primary header-call" href={site.phone.href}>
+      <Icon name="Phone" size={19} />
+      <span class="call-short">Call</span>
+      <span class="call-full"><span class="visually-hidden">Call </span>{site.phone.display}</span>
+    </a>
+  </div>
+</header>
+
+<script>
+  import '../scripts/nav.ts';
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgb(251 249 246 / 0.94);
+    border-bottom: 1px solid var(--line);
+    -webkit-backdrop-filter: saturate(1.4) blur(10px);
+    backdrop-filter: saturate(1.4) blur(10px);
+  }
+
+  /* backdrop-filter makes the header the containing block for position:fixed children,
+     which would trap the mobile menu panel inside the header bar. */
+  .site-header[data-nav-open] {
+    background: var(--paper);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: var(--header-h);
+  }
+
+  .brand {
+    display: block;
+    margin-right: auto;
+    padding: 0.35rem 0;
+    border-radius: 6px;
+  }
+
+  .brand img {
+    height: 50px;
+    width: auto;
+  }
+
+  /* ---- mobile & tablet: toggle + panel */
+  .nav {
+    order: 3;
+  }
+
+  .header-call {
+    order: 2;
+    min-height: 44px;
+    padding: 0.55rem 1rem;
+    font-size: 1rem;
+  }
+
+  .call-full {
+    display: none;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    padding: 0.5rem 0.85rem;
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    background: var(--white);
+    color: var(--ink);
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .nav-toggle__open {
+    display: inline-flex;
+  }
+
+  .nav-toggle .nav-toggle__close,
+  [data-nav-open] .nav-toggle .nav-toggle__open {
+    display: none;
+  }
+
+  [data-nav-open] .nav-toggle .nav-toggle__close {
+    display: inline-flex;
+  }
+
+  .nav-panel {
+    display: none;
+  }
+
+  [data-nav-open] .nav-panel {
+    display: block;
+    position: fixed;
+    inset: var(--header-h) 0 0 0;
+    overflow-y: auto;
+    padding: 1.25rem var(--gutter) 3rem;
+    background: var(--paper);
+    border-top: 1px solid var(--line);
+  }
+
+  .nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-list > li {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-link {
+    display: block;
+    padding: 1rem 0.25rem;
+    color: var(--ink);
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .nav-link[aria-current='page'],
+  .nav-link.is-section {
+    color: var(--plum-700);
+  }
+
+  .sub-toggle {
+    display: none;
+  }
+
+  .sub {
+    list-style: none;
+    margin: -0.5rem 0 0.75rem;
+    padding: 0 0 0 1rem;
+    border-left: 2px solid var(--plum-100);
+  }
+
+  .sub a {
+    display: block;
+    padding: 0.55rem 0.5rem;
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .sub a[aria-current='page'] {
+    color: var(--plum-700);
+  }
+
+  .sub-blurb {
+    display: none;
+  }
+
+  .panel-extra {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 1.75rem;
+  }
+
+  .panel-extra p {
+    margin: 0;
+  }
+
+  @media (min-width: 30em) {
+    .call-short {
+      display: none;
+    }
+    .call-full {
+      display: inline;
+    }
+  }
+
+  /* ---- desktop */
+  @media (min-width: 75em) {
+    .brand img {
+      height: 56px;
+    }
+
+    .nav {
+      order: 2;
+      margin-right: 0.5rem;
+    }
+
+    .header-call {
+      order: 3;
+    }
+
+    .nav-toggle,
+    .panel-extra {
+      display: none;
+    }
+
+    .nav-panel,
+    [data-nav-open] .nav-panel {
+      display: block;
+      position: static;
+      padding: 0;
+      background: none;
+      border: 0;
+      overflow: visible;
+    }
+
+    .nav-list {
+      display: flex;
+      align-items: center;
+      gap: 0.15rem;
+    }
+
+    .nav-list > li {
+      position: relative;
+      border: 0;
+    }
+
+    .nav-row {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-link {
+      padding: 0.55rem 0.8rem;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 650;
+    }
+
+    .has-sub .nav-link {
+      padding-right: 0.25rem;
+    }
+
+    .nav-link:hover {
+      color: var(--plum-900);
+      background: var(--plum-50);
+    }
+
+    .nav-link[aria-current='page'],
+    .nav-link.is-section {
+      color: var(--plum-900);
+      background: var(--plum-100);
+    }
+
+    .sub-toggle {
+      display: inline-grid;
+      place-items: center;
+      width: 32px;
+      height: 36px;
+      margin-left: 0.05rem;
+      padding: 0;
+      border: 0;
+      border-radius: 999px;
+      background: none;
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    .sub-toggle:hover {
+      background: var(--plum-50);
+    }
+
+    .sub-toggle :global(.icon) {
+      transition: transform 0.2s var(--ease);
+    }
+
+    .sub-toggle[aria-expanded='true'] :global(.icon) {
+      transform: rotate(180deg);
+    }
+
+    .sub {
+      display: none;
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      left: 0;
+      min-width: 20rem;
+      margin: 0;
+      padding: 0.5rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--white);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* invisible bridge so the menu stays open while the pointer moves down to it */
+    .sub::before {
+      content: '';
+      position: absolute;
+      inset: -0.6rem 0 auto;
+      height: 0.6rem;
+    }
+
+    .has-sub:hover .sub,
+    .has-sub:has([aria-expanded='true']) .sub {
+      display: block;
+    }
+
+    .sub a {
+      display: grid;
+      gap: 0.1rem;
+      padding: 0.7rem 0.85rem;
+      border-radius: var(--radius-sm);
+    }
+
+    .sub a:hover,
+    .sub a[aria-current='page'] {
+      background: var(--plum-50);
+    }
+
+    .sub-blurb {
+      display: block;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .site-header {
+      background: var(--paper);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+</style>

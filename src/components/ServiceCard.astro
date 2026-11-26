@@ -1,0 +1,59 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  title: string;
+  href: string;
+  icon: string;
+  cta?: string;
+  headingLevel?: 'h2' | 'h3';
+}
+
+const { title, href, icon, cta = 'Learn more', headingLevel: H = 'h3' } = Astro.props;
+---
+
+<article class="card card--link service-card">
+  <span class="icon-tile"><Icon name={icon} size={24} /></span>
+  <H class="service-title"><a class="stretched" href={href}>{title}</a></H>
+  <div class="service-text"><slot /></div>
+  <span class="link-arrow" aria-hidden="true">{cta} <Icon name="ArrowRight" size={18} /></span>
+</article>
+
+<style>
+  .service-card {
+    height: 100%;
+  }
+
+  .service-title {
+    margin-bottom: 0.5rem;
+    font-size: var(--step-2);
+  }
+
+  .service-title a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .service-title a:focus-visible {
+    outline: none;
+  }
+
+  .service-card:has(a:focus-visible) {
+    outline: 3px solid var(--plum-700);
+    outline-offset: 3px;
+  }
+
+  .service-text {
+    flex: 1;
+    color: var(--muted);
+  }
+
+  .service-text :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .link-arrow {
+    margin-top: 1.25rem;
+    color: var(--accent);
+  }
+</style>

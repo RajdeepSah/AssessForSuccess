@@ -1,0 +1,73 @@
+---
+import { site } from '../data/site';
+import Icon from './Icon.astro';
+
+interface Props {
+  title?: string;
+}
+
+const { title = 'Questions? Give us a call.' } = Astro.props;
+---
+
+<section class="cta-band" aria-labelledby="cta-title">
+  <div class="container cta-inner">
+    <div>
+      <h2 id="cta-title">{title}</h2>
+      {
+        Astro.slots.has('default') ? (
+          <slot />
+        ) : (
+          <p>We'll answer your questions and help you figure out the next step. Call for pricing.</p>
+        )
+      }
+      <p class="cta-hours"><Icon name="Clock" size={18} /> {site.hours.days}, {site.hours.time} ({site.hours.zone})</p>
+    </div>
+    <div class="btn-row">
+      <a class="btn btn--light" href={site.phone.href}><Icon name="Phone" size={20} /> Call {site.phone.display}</a>
+      <a class="btn btn--outline-light" href="/contact/#message">Send a message</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-band {
+    background: linear-gradient(135deg, var(--plum-700), var(--plum-900));
+    color: #f3ecf6;
+  }
+
+  .cta-inner {
+    display: grid;
+    gap: 1.75rem;
+    align-items: center;
+    padding-block: clamp(3rem, 6vw, 4.5rem);
+  }
+
+  h2 {
+    color: var(--white);
+    font-size: var(--step-3);
+    margin-bottom: 0.4em;
+  }
+
+  p {
+    max-width: 50ch;
+  }
+
+  .cta-hours {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    font-size: var(--step--1);
+    color: #dccbe5;
+  }
+
+  :global(.cta-band) :focus-visible {
+    outline-color: var(--gold-400);
+  }
+
+  @media (min-width: 56em) {
+    .cta-inner {
+      grid-template-columns: 1.4fr auto;
+    }
+  }
+</style>

@@ -1,0 +1,86 @@
+---
+// One level of care, with a simple 3-step intensity meter that reads even before hours are confirmed.
+interface Props {
+  name: string;
+  intensity: 1 | 2 | 3;
+}
+
+const { name, intensity } = Astro.props;
+const words = { 1: 'lightest', 2: 'moderate', 3: 'most' } as const;
+---
+
+<article class="card level">
+  <div class="meter" aria-hidden="true">
+    {[1, 2, 3].map((n) => <span class:list={['dot', { on: n <= intensity }]} />)}
+  </div>
+  <p class="meter-label">
+    <span class="visually-hidden">Intensity: {intensity} of 3, </span>{words[intensity]} time each week
+  </p>
+  <h3>{name}</h3>
+  <div class="level-desc"><slot /></div>
+  <dl class="level-often">
+    <dt>How often</dt>
+    <dd><slot name="often" /></dd>
+  </dl>
+</article>
+
+<style>
+  .level {
+    height: 100%;
+  }
+
+  .meter {
+    display: flex;
+    gap: 0.35rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .dot {
+    width: 2.25rem;
+    height: 0.5rem;
+    border-radius: 999px;
+    background: var(--plum-100);
+  }
+
+  .dot.on {
+    background: var(--plum-700);
+  }
+
+  .meter-label {
+    margin: 0 0 1rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  h3 {
+    font-size: var(--step-2);
+    margin-bottom: 0.5rem;
+  }
+
+  .level-desc {
+    flex: 1;
+  }
+
+  .level-desc :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .level-often {
+    margin: 1.25rem 0 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+  }
+
+  dt {
+    font-weight: 700;
+    font-size: var(--step--1);
+    color: var(--plum-700);
+  }
+
+  dd {
+    margin: 0.2rem 0 0;
+  }
+</style>

@@ -1,0 +1,21 @@
+{
+  "name": "Assess for Success",
+  "short_name": "A4S",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "theme_color": "#63297C",
+  "background_color": "#FBF9F6",
+  "display": "browser"
+}

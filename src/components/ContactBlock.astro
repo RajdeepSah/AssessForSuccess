@@ -1,0 +1,90 @@
+---
+import { site } from '../data/site';
+import Icon from './Icon.astro';
+---
+
+<ul class="contact-block" role="list">
+  <li>
+    <span class="icon-tile"><Icon name="Phone" size={22} /></span>
+    <div>
+      <p class="label">Phone</p>
+      <a class="value" href={site.phone.href}>{site.phone.display}</a>
+    </div>
+  </li>
+  <li>
+    <span class="icon-tile"><Icon name="Printer" size={22} /></span>
+    <div>
+      <p class="label">Fax</p>
+      <p class="value">{site.fax.display}</p>
+    </div>
+  </li>
+  <li>
+    <span class="icon-tile"><Icon name="Mail" size={22} /></span>
+    <div>
+      <p class="label">Email</p>
+      <a class="value" href={`mailto:${site.email}`}>{site.email}</a>
+    </div>
+  </li>
+  <li>
+    <span class="icon-tile"><Icon name="MapPin" size={22} /></span>
+    <div>
+      <p class="label">Office</p>
+      <p class="value">
+        {site.address.street}<br />{site.address.city}, {site.address.region} {site.address.postalCode}
+      </p>
+      <a href={site.mapsUrl} rel="noopener">Get directions</a>
+    </div>
+  </li>
+  <li>
+    <span class="icon-tile"><Icon name="Clock" size={22} /></span>
+    <div>
+      <p class="label">Hours</p>
+      <p class="value">{site.hours.days}<br />{site.hours.time}</p>
+      <p class="small muted">{site.hours.zone}</p>
+    </div>
+  </li>
+</ul>
+
+<style>
+  .contact-block {
+    display: grid;
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .icon-tile {
+    margin: 0;
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .label {
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .value {
+    font-size: 1.125rem;
+    font-weight: 650;
+    color: var(--ink);
+  }
+
+  a.value {
+    color: var(--plum-700);
+  }
+</style>

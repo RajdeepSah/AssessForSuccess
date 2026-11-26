@@ -1,0 +1,204 @@
+---
+// The whole-person diagram from the client's whiteboard: physical, mental, social and spiritual
+// well-being around the person. The diagram is decorative; the descriptions are real text.
+interface Props {
+  variant?: 'full' | 'compact';
+}
+
+const { variant = 'full' } = Astro.props;
+
+const areas = [
+  { id: 'physical', label: 'Physical', text: 'Sleep, health, energy, and activity.' },
+  { id: 'mental', label: 'Mental', text: 'Thoughts, emotions, stress, and coping.' },
+  { id: 'social', label: 'Social', text: 'Family, friends, school or work, and community.' },
+  { id: 'spiritual', label: 'Spiritual', text: 'Your values, purpose, and sources of hope, whatever that means to you.' },
+];
+---
+
+<div class:list={['wp', `wp--${variant}`]}>
+  <svg class="wp-svg" viewBox="0 0 360 360" aria-hidden="true" focusable="false">
+    <defs>
+      <clipPath id={`wp-clip-${variant}`}><rect width="360" height="360" rx="30"></rect></clipPath>
+      <marker id={`wp-head-${variant}`} viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M0 0 10 5 0 10z" class="wp-headfill"></path>
+      </marker>
+    </defs>
+    <g clip-path={`url(#wp-clip-${variant})`}>
+      <rect class="q q-physical" x="0" y="0" width="180" height="180"></rect>
+      <rect class="q q-mental" x="180" y="0" width="180" height="180"></rect>
+      <rect class="q q-social" x="0" y="180" width="180" height="180"></rect>
+      <rect class="q q-spiritual" x="180" y="180" width="180" height="180"></rect>
+    </g>
+    <path class="wp-cross" d="M180 0v360M0 180h360"></path>
+    <g class="wp-arrows">
+      <path class="wp-arrow" d="M138 138 92 92" marker-end={`url(#wp-head-${variant})`}></path>
+      <path class="wp-arrow" d="M222 138 268 92" marker-end={`url(#wp-head-${variant})`}></path>
+      <path class="wp-arrow" d="M138 222 92 268" marker-end={`url(#wp-head-${variant})`}></path>
+      <path class="wp-arrow" d="M222 222 268 268" marker-end={`url(#wp-head-${variant})`}></path>
+    </g>
+    <circle class="wp-center" cx="180" cy="180" r="52"></circle>
+    <text class="wp-you" x="180" y="188" text-anchor="middle">You</text>
+    <text class="wp-label" x="28" y="48">Physical</text>
+    <text class="wp-label" x="332" y="48" text-anchor="end">Mental</text>
+    <text class="wp-label" x="28" y="330">Social</text>
+    <text class="wp-label" x="332" y="330" text-anchor="end">Spiritual</text>
+  </svg>
+
+  {
+    variant === 'full' && (
+      <ul class="wp-list" role="list">
+        {areas.map((a) => (
+          <li data-area={a.id}>
+            <h3>{a.label}</h3>
+            <p>{a.text}</p>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</div>
+
+<style>
+  .wp {
+    display: grid;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: center;
+  }
+
+  .wp-svg {
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+    margin-inline: auto;
+    overflow: visible;
+  }
+
+  .wp--compact .wp-svg {
+    max-width: 240px;
+  }
+
+  .q {
+    transition: fill 0.2s var(--ease);
+  }
+
+  .q-physical,
+  .q-spiritual {
+    fill: #efe6f3;
+  }
+
+  .q-mental,
+  .q-social {
+    fill: #e6d9ee;
+  }
+
+  .wp-cross {
+    stroke: var(--paper);
+    stroke-width: 6;
+  }
+
+  .wp-arrow {
+    fill: none;
+    stroke: var(--plum-700);
+    stroke-width: 3;
+    stroke-linecap: round;
+  }
+
+  .wp-headfill {
+    fill: var(--plum-700);
+  }
+
+  .wp-center {
+    fill: var(--white);
+    stroke: var(--plum-700);
+    stroke-width: 3;
+  }
+
+  .wp-you {
+    font-family: var(--font-sans);
+    font-size: 24px;
+    font-weight: 800;
+    fill: var(--plum-900);
+  }
+
+  .wp-label {
+    font-family: var(--font-sans);
+    font-size: 21px;
+    font-weight: 750;
+    fill: var(--plum-900);
+  }
+
+  .wp-list {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .wp-list li {
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--plum-200);
+    border-radius: var(--radius-sm);
+    background: var(--white);
+    transition:
+      border-color 0.2s var(--ease),
+      background-color 0.2s var(--ease);
+  }
+
+  .wp-list h3 {
+    margin: 0 0 0.15rem;
+    font-size: 1.125rem;
+  }
+
+  .wp-list p {
+    margin: 0;
+    color: var(--muted);
+  }
+
+  /* Hovering a description highlights its quadrant, and the other way round. */
+  .wp:has(li[data-area='physical']:hover) .q-physical,
+  .wp:has(li[data-area='mental']:hover) .q-mental,
+  .wp:has(li[data-area='social']:hover) .q-social,
+  .wp:has(li[data-area='spiritual']:hover) .q-spiritual,
+  .q:hover {
+    fill: #d6c0e2;
+  }
+
+  .wp:has(.q-physical:hover) li[data-area='physical'],
+  .wp:has(.q-mental:hover) li[data-area='mental'],
+  .wp:has(.q-social:hover) li[data-area='social'],
+  .wp:has(.q-spiritual:hover) li[data-area='spiritual'],
+  .wp-list li:hover {
+    border-left-color: var(--plum-700);
+    background: var(--plum-50);
+  }
+
+  @media (min-width: 56em) {
+    .wp--full {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    }
+  }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .wp-arrows {
+        transform-origin: 180px 180px;
+        animation: wp-grow linear both;
+        animation-timeline: view();
+        animation-range: entry 15% cover 40%;
+      }
+
+      @keyframes wp-grow {
+        from {
+          opacity: 0;
+          transform: scale(0.55);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+    }
+  }
+</style>

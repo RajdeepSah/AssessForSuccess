@@ -1,0 +1,70 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  icon?: string;
+  tone?: 'plum' | 'gold' | 'neutral';
+  class?: string;
+}
+
+const { icon = 'Info', tone = 'plum', class: className } = Astro.props;
+---
+
+<div class:list={['callout', `callout--${tone}`, className]}>
+  <span class="callout-icon"><Icon name={icon} size={22} /></span>
+  <div class="callout-body"><slot /></div>
+</div>
+
+<style>
+  .callout {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1.25rem 1.4rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--plum-200);
+    background: var(--plum-50);
+  }
+
+  .callout--gold {
+    border-color: #f1d49a;
+    background: var(--gold-100);
+  }
+
+  .callout--neutral {
+    border-color: var(--line);
+    background: var(--white);
+  }
+
+  .callout-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--plum-700);
+    color: var(--white);
+  }
+
+  .callout--gold .callout-icon {
+    background: var(--gold-400);
+    color: var(--ink);
+  }
+
+  .callout-body {
+    padding-top: 0.3rem;
+  }
+
+  .callout-body :global(p) {
+    margin-bottom: 0.5em;
+  }
+
+  .callout-body :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .callout-body :global(strong) {
+    color: var(--ink);
+  }
+</style>

@@ -1,0 +1,256 @@
+---
+import Base from '../layouts/Base.astro';
+import Confirm from '../components/Confirm.astro';
+import Icon from '../components/Icon.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Step from '../components/Step.astro';
+import Steps from '../components/Steps.astro';
+import ChoiceGroup from '../components/form/ChoiceGroup.astro';
+import Field from '../components/form/Field.astro';
+import FormShell from '../components/form/FormShell.astro';
+import { service } from '../data/schema';
+import { site } from '../data/site';
+
+const description =
+  'Courts, including juvenile court, can refer adults and youth to Assess for Success in Topeka for assessments, treatment, and education, or contract for services.';
+
+const referFor = [
+  {
+    icon: 'ClipboardCheck',
+    title: 'Assessments',
+    href: '/behavioral-health/assessments/',
+    items: ['Mental health assessments', 'Substance use assessments', 'Court-ordered assessments for DUI, drug possession, and criminal damage cases'],
+  },
+  {
+    icon: 'MessagesSquare',
+    title: 'Treatment',
+    href: '/behavioral-health/treatment/',
+    items: ['Individual therapy', 'Group therapy'],
+  },
+  {
+    icon: 'BookOpen',
+    title: 'Education',
+    href: '/behavioral-health/education/',
+    items: ['Alcohol and drug education', 'Anger education'],
+  },
+];
+---
+
+<Base
+  title="For Courts & Referral Partners: Assessments for Adults & Youth"
+  description={description}
+  breadcrumbs={[{ label: 'Courts & Referrals', href: '/referrals/' }]}
+  jsonLd={[service('Court-referred assessments, treatment, and education', description, '/referrals/')]}
+>
+  <PageHeader title="For courts and referral partners" eyebrow="Courts & Referrals" crumbs={[]} current="Courts & Referrals">
+    <p slot="lead">
+      Courts, including juvenile court, can refer adults and young people to Assess for Success for assessments, treatment, and
+      education, and can contract with us for services.
+    </p>
+    <Fragment slot="actions">
+      <a class="btn btn--primary" href={site.phone.href}><Icon name="Phone" size={20} /> Call {site.phone.display}</a>
+      <a class="btn btn--secondary no-print" href="#referral-form">Send a referral inquiry</a>
+    </Fragment>
+  </PageHeader>
+
+  <section class="section" aria-labelledby="refer-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="refer-title">What you can refer for</h2>
+        <p class="lead">For adults and young people.</p>
+      </div>
+      <div class="grid grid--3">
+        {
+          referFor.map((group) => (
+            <div class="card">
+              <span class="icon-tile">
+                <Icon name={group.icon} size={24} />
+              </span>
+              <h3>
+                <a href={group.href}>{group.title}</a>
+              </h3>
+              <ul class="checks" role="list">
+                {group.items.map((item) => (
+                  <li>
+                    <Icon name="Check" size={18} />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--white" aria-labelledby="how-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="how-title">How referrals work</h2>
+      </div>
+      <Steps layout="grid">
+        <Step title="Contact us">
+          <p>Call <a href={site.phone.href}>{site.phone.display}</a> or send a referral inquiry below.</p>
+          <p><Confirm note="Preferred way to receive referral paperwork (fax (785) 338-8907?)" /></p>
+        </Step>
+        <Step title="We schedule the assessment">
+          <p><Confirm note="Who contacts the person to schedule, and how soon">We reach out to schedule the person's assessment.</Confirm></p>
+        </Step>
+        <Step title="Assessment and recommendation">
+          <p>Depending on the assessment, we may recommend treatment, education, or both.</p>
+        </Step>
+        <Step title="Keeping you informed">
+          <p><Confirm note="What is reported back to the referring court, and with which signed release" /></p>
+        </Step>
+      </Steps>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="contracts-title">
+    <div class="container contracts">
+      <h2 id="contracts-title">Contracts</h2>
+      <div class="prose">
+        <p class="lead">Courts can contract with Assess for Success for services.</p>
+        <p>Contract pricing is discussed directly with each court. Call <a href={site.phone.href}>{site.phone.display}</a> to talk about your court's needs.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tint no-print" id="referral-form" aria-labelledby="form-title">
+    <div class="container form-layout">
+      <div class="form-intro">
+        <h2 id="form-title">Send a referral inquiry</h2>
+        <p>Tell us who you are and what you're referring for. We'll follow up to talk through the referral.</p>
+        <p class="privacy-note">
+          <Icon name="ShieldCheck" size={20} />
+          <span>Please don't include the person's name, case number, or health information in this form. We'll talk through those details by phone.</span>
+        </p>
+        <ul class="direct" role="list">
+          <li><Icon name="Phone" size={18} /> <a href={site.phone.href}>{site.phone.display}</a></li>
+          <li><Icon name="Printer" size={18} /> Fax {site.fax.display}</li>
+          <li><Icon name="Mail" size={18} /> <a href={`mailto:${site.email}`}>{site.email}</a></li>
+        </ul>
+      </div>
+      <div class="card form-card">
+        <FormShell name="referral-inquiry" submitLabel="Send referral inquiry">
+          <Field label="Your name" name="name" required autocomplete="name" />
+          <Field label="Court or organization" name="organization" required autocomplete="organization" />
+          <Field label="Your role or title" name="role" autocomplete="organization-title" />
+          <Field label="Phone" name="phone" type="tel" required autocomplete="tel" error="Enter a phone number we can reach you at" />
+          <Field label="Email" name="email" type="email" required autocomplete="email" error="Enter your email address" />
+          <ChoiceGroup
+            legend="What are you referring for?"
+            name="services"
+            type="checkbox"
+            hint="Choose any that apply."
+            options={[
+              { value: 'Mental health assessment', label: 'Mental health assessment' },
+              { value: 'Substance use assessment', label: 'Substance use assessment' },
+              { value: 'Court-ordered assessment', label: 'Court-ordered assessment (DUI, drug possession, criminal damage)' },
+              { value: 'Treatment', label: 'Treatment (individual or group therapy)' },
+              { value: 'Alcohol and drug education', label: 'Alcohol and drug education' },
+              { value: 'Anger education', label: 'Anger education' },
+              { value: 'Contract for services', label: 'Contracting for services' },
+              { value: 'Not sure', label: 'Not sure yet' },
+            ]}
+          />
+          <ChoiceGroup
+            legend="Are you referring an adult or a young person?"
+            name="age_group"
+            options={[
+              { value: 'Adult', label: 'Adult' },
+              { value: 'Young person', label: 'Young person' },
+              { value: 'Both or not sure', label: 'Both, or not sure' },
+            ]}
+          />
+          <Field
+            label="Anything else we should know?"
+            name="notes"
+            type="textarea"
+            maxlength={1500}
+            hint="No names, case numbers, or health information, please."
+          />
+        </FormShell>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .checks {
+    display: grid;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .checks li {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+  }
+
+  .checks :global(.icon) {
+    margin-top: 0.25rem;
+    color: var(--plum-700);
+  }
+
+  .contracts {
+    display: grid;
+    gap: 1rem 3rem;
+  }
+
+  @media (min-width: 56em) {
+    .contracts {
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    }
+  }
+
+  .form-layout {
+    display: grid;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  @media (min-width: 64em) {
+    .form-layout {
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+      gap: 3.5rem;
+    }
+
+    .form-intro {
+      position: sticky;
+      top: calc(var(--header-h) + 2rem);
+    }
+  }
+
+  .form-intro .privacy-note {
+    margin: 1.5rem 0;
+    background: var(--white);
+  }
+
+  .direct {
+    display: grid;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-weight: 600;
+  }
+
+  .direct li {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+  }
+
+  .direct :global(.icon) {
+    color: var(--plum-700);
+  }
+
+  .form-card {
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+  }
+</style>

@@ -1,0 +1,14 @@
+---
+// The A4S monogram as a single-color shape (fill follows CSS `color`). Decorative only.
+import { MARK_PATH, MARK_VIEWBOX } from '../data/brand';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<svg class={className} viewBox={MARK_VIEWBOX} aria-hidden="true" focusable="false">
+  <path d={MARK_PATH} fill="currentColor"></path>
+</svg>

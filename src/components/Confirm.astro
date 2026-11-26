@@ -1,0 +1,21 @@
+---
+/**
+ * Marks a detail the client has not confirmed yet.
+ * - Preview builds show it as a highlighted chip so the client can see what's missing.
+ * - `npm run build:prod` (scripts/check-confirm.mjs) fails while any remain on the site.
+ *
+ * Usage:
+ *   <Confirm note="Session length" />                    → shows "Confirm: Session length"
+ *   <Confirm note="Session length">about 60 minutes</Confirm>  → shows the draft wording, highlighted
+ */
+interface Props {
+  note: string;
+}
+
+const { note } = Astro.props;
+const hasDraft = Astro.slots.has('default');
+---
+
+<mark class="confirm" data-confirm={note} title={`Needs client confirmation: ${note}`}>
+  {hasDraft ? <slot /> : <span class="confirm__tag">Confirm: {note}</span>}
+</mark>

@@ -1,0 +1,148 @@
+---
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import ChoiceGroup from '../../components/form/ChoiceGroup.astro';
+import Field from '../../components/form/Field.astro';
+import FormShell from '../../components/form/FormShell.astro';
+import SelectField from '../../components/form/SelectField.astro';
+import { site } from '../../data/site';
+import { sports } from '../../data/sports';
+---
+
+<Base
+  title="Register for A4S Sports"
+  description="Register your child for an A4S Sports team, one-on-one skills training, or mentoring in Topeka. We'll call you to confirm details and pricing."
+  ogImage="/og/sports.png"
+  ogImageAlt="A4S Sports: teams, one-on-one training, and mentoring for youth in Topeka, Kansas"
+  breadcrumbs={[
+    { label: 'A4S Sports', href: '/sports/' },
+    { label: 'Register', href: '/sports/register/' },
+  ]}
+  theme="sports"
+>
+  <PageHeader title="Register for A4S Sports" eyebrow="Youth" crumbs={[{ label: 'A4S Sports', href: '/sports/' }]} current="Register" variant="sports">
+    <p slot="lead">Fill this out and we'll call you to confirm details and pricing.</p>
+  </PageHeader>
+
+  <section class="section">
+    <div class="container layout">
+      <div class="card form-card">
+        <FormShell name="sports-registration" submitLabel="Send registration">
+          <Field label="Parent or guardian's name" name="guardian_name" required autocomplete="name" error="Enter the parent or guardian's name" />
+          <Field label="Phone" name="phone" type="tel" required autocomplete="tel" error="Enter a phone number we can reach you at" />
+          <Field label="Email" name="email" type="email" required autocomplete="email" error="Enter your email address" />
+          <Field label="Child's first name" name="child_first_name" required autocomplete="off" error="Enter your child's first name" />
+          <Field
+            label="Child's age"
+            name="child_age"
+            required
+            inputmode="numeric"
+            pattern="[0-9]{1,2}"
+            maxlength={2}
+            autocomplete="off"
+            error="Enter your child's age"
+          />
+          <ChoiceGroup
+            legend="What are you signing up for?"
+            name="program"
+            required
+            error="Choose what you're signing up for"
+            options={[
+              { value: 'team', label: 'A team' },
+              { value: 'training', label: 'One-on-one training' },
+              { value: 'mentoring', label: 'Mentoring' },
+            ]}
+          />
+          <SelectField
+            label="Which sport?"
+            name="sport"
+            showWhen="program=team,training"
+            options={[...sports.map((s) => ({ value: s.id, label: s.name })), { value: 'not-sure', label: 'Not sure yet' }]}
+          />
+          <Field
+            label="What skill would your child like to work on?"
+            name="skill"
+            showWhen="program=training"
+            hint="For example: shooting, passing, or footwork."
+            maxlength={300}
+          />
+          <Field label="Questions or notes" name="notes" type="textarea" maxlength={1500} />
+          <Field label="I'm this child's parent or legal guardian." name="guardian_confirm" type="checkbox" required error="Please confirm you're the child's parent or legal guardian" />
+          <p class="privacy-note">
+            <Icon name="ShieldCheck" size={20} />
+            <span>We use this information to contact you about A4S Sports. Please don't include medical information here.</span>
+          </p>
+        </FormShell>
+      </div>
+
+      <aside class="next" aria-labelledby="next-title">
+        <h2 id="next-title">What happens next</h2>
+        <ol role="list">
+          <li><strong>You send this form.</strong> It takes a couple of minutes.</li>
+          <li><strong>We call you</strong> to confirm details and pricing.</li>
+        </ol>
+        <p class="muted">Rather talk now? Call <a href={site.phone.href}>{site.phone.display}</a>, {site.hours.short} ({site.hours.zone}).</p>
+        <p><a class="link-arrow" href="/sports/">Back to A4S Sports <Icon name="ArrowRight" size={18} /></a></p>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .layout {
+    display: grid;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  @media (min-width: 64em) {
+    .layout {
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+      gap: 3.5rem;
+    }
+
+    .next {
+      position: sticky;
+      top: calc(var(--header-h) + 2rem);
+    }
+  }
+
+  .form-card {
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+  }
+
+  .next h2 {
+    font-size: var(--step-2);
+  }
+
+  .next ol {
+    display: grid;
+    gap: 0.9rem;
+    margin: 0 0 1.5rem;
+    padding: 0;
+    list-style: none;
+    counter-reset: n;
+  }
+
+  .next li {
+    position: relative;
+    padding-left: 2.75rem;
+    counter-increment: n;
+  }
+
+  .next li::before {
+    content: counter(n);
+    position: absolute;
+    left: 0;
+    top: -0.1rem;
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--gold-400);
+    color: var(--ink);
+    font-weight: 800;
+  }
+</style>

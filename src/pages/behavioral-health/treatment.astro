@@ -1,0 +1,119 @@
+---
+import Base from '../../layouts/Base.astro';
+import Callout from '../../components/Callout.astro';
+import Confirm from '../../components/Confirm.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
+import LevelCard from '../../components/LevelCard.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import WholePerson from '../../components/WholePerson.astro';
+import { service } from '../../data/schema';
+import { site } from '../../data/site';
+
+const description =
+  'Individual and group therapy for substance use disorders in Topeka, KS, with levels of care explained in plain language and a whole-person approach.';
+---
+
+<Base
+  title="Substance Use Treatment: Individual & Group Therapy in Topeka"
+  description={description}
+  breadcrumbs={[
+    { label: 'Behavioral Health Care', href: '/behavioral-health/' },
+    { label: 'Treatment', href: '/behavioral-health/treatment/' },
+  ]}
+  jsonLd={[service('Substance use disorder treatment: individual and group therapy', description, '/behavioral-health/treatment/')]}
+>
+  <PageHeader title="Treatment" eyebrow="Behavioral Health Care" crumbs={[{ label: 'Behavioral Health Care', href: '/behavioral-health/' }]}>
+    <Fragment slot="lead">
+      <p>Individual and group therapy for substance use disorders, built around the whole person.</p>
+      <p class="small"><Confirm note="Does therapy also address mental health concerns, or substance use only?" /></p>
+    </Fragment>
+    <Fragment slot="actions">
+      <a class="btn btn--primary" href={site.phone.href}><Icon name="Phone" size={20} /> Call {site.phone.display}</a>
+      <a class="btn btn--secondary" href="#levels">Levels of care</a>
+    </Fragment>
+  </PageHeader>
+
+  <section class="section" aria-labelledby="therapy-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="therapy-title">Individual and group therapy</h2>
+      </div>
+      <div class="grid grid--2">
+        <div class="card">
+          <span class="icon-tile"><Icon name="MessageCircle" size={24} /></span>
+          <h3>Individual therapy</h3>
+          <p>One-on-one sessions with a counselor.</p>
+          <p class="muted small">Session length: <Confirm note="Individual session length" /></p>
+        </div>
+        <div class="card">
+          <span class="icon-tile"><Icon name="Users" size={24} /></span>
+          <h3>Group therapy</h3>
+          <p>Sessions with a group, led by a counselor.</p>
+          <p class="muted small">Session length and group size: <Confirm note="Group session length and group size" /></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--white" id="levels" aria-labelledby="levels-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="levels-title">Levels of care, in plain language</h2>
+        <p class="lead">
+          Your assessment helps decide how much support to start with. Here's what each level means for your week.
+        </p>
+        <p class="small">
+          <Confirm note="Levels of care offered today (the old site listed early intervention, outpatient, and intensive outpatient)" />
+        </p>
+      </div>
+      <div class="grid grid--3">
+        <LevelCard name="Early intervention" intensity={1}>
+          <p>The lightest level, often focused on education, for people who are at risk but may not need full treatment.</p>
+          <Confirm slot="often" note="How often people attend early intervention" />
+        </LevelCard>
+        <LevelCard name="Outpatient" intensity={2}>
+          <p>Regular counseling sessions (individual, group, or both) while you keep up with work, school, and home.</p>
+          <Confirm slot="often" note="How often people attend outpatient (sessions or hours per week)" />
+        </LevelCard>
+        <LevelCard name="Intensive outpatient" intensity={3}>
+          <p>More treatment time each week for people who need more structure and support, while still living at home.</p>
+          <Confirm slot="often" note="How often people attend intensive outpatient (hours and days per week)" />
+        </LevelCard>
+      </div>
+      <p class="levels-note">
+        <Confirm note="Can people move between levels as they make progress?">As you make progress, your level of care can change.</Confirm>
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="whole-person" aria-labelledby="whole-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="whole-title">Caring for the whole person</h2>
+        <p class="lead">In counseling, we consider your physical, mental, social, and spiritual well-being.</p>
+      </div>
+      <WholePerson />
+    </div>
+  </section>
+
+  <section class="section section--tight" aria-label="Getting started">
+    <div class="container">
+      <Callout icon="ClipboardCheck">
+        <p><strong>Getting started</strong></p>
+        <p>
+          <Confirm note="Does treatment always start with an assessment?">Treatment starts with an assessment.</Confirm>
+          {' '}<a href="/behavioral-health/assessments/">Learn about assessments</a>.
+        </p>
+      </Callout>
+    </div>
+  </section>
+
+  <CtaBand title="Talk with us about treatment" />
+</Base>
+
+<style>
+  .levels-note {
+    margin: 1.5rem 0 0;
+  }
+</style>

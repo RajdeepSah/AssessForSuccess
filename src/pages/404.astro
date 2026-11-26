@@ -1,0 +1,49 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+
+const links = [
+  { href: '/behavioral-health/', label: 'Behavioral Health Care' },
+  { href: '/behavioral-health/assessments/', label: 'Assessments' },
+  { href: '/sports/', label: 'A4S Sports' },
+  { href: '/referrals/', label: 'Courts & Referrals' },
+  { href: '/contact/', label: 'Contact' },
+];
+---
+
+<Base title="Page not found" description="We couldn't find that page." noindex>
+  <section class="section">
+    <div class="container lost">
+      <p class="eyebrow">Page not found</p>
+      <h1>We can't find that page.</h1>
+      <p class="lead">It may have moved when we updated our website. These links might help:</p>
+      <ul class="links" role="list">
+        {
+          links.map((l) => (
+            <li>
+              <a class="link-arrow" href={l.href}>
+                {l.label} <Icon name="ArrowRight" size={18} />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p>Or call us at <a href={site.phone.href}>{site.phone.display}</a>.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .lost {
+    max-width: 44rem;
+  }
+
+  .links {
+    display: grid;
+    gap: 0.75rem;
+    margin: 1.5rem 0 2rem;
+    padding: 0;
+    list-style: none;
+  }
+</style>
